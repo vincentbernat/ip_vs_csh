@@ -1,4 +1,4 @@
-☠️ This module is currently being reviewed by smarter people than me.
+☠️ There is a [better version][0] of this module ready to be merged in the kernel.
 
 # Consistent source hashing scheduler for Linux IPVS
 
@@ -24,6 +24,7 @@ very large setups).
 This module should be part of Linux 4.17. This repository enables you
 to build it for older kernel versions.
 
+[0]: http://archive.linuxvirtualserver.org/html/lvs-devel/2018-03/msg00023.html
 [1]: https://research.google.com/pubs/pub44824.html
 
 ## Compilation
