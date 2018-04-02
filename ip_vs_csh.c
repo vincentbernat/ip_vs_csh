@@ -94,21 +94,28 @@ ip_vs_get_port(const struct sk_buff *skb, struct ip_vs_iphdr *iph)
 	}
 }
 
+static inline u32
+ip_vs_csh_hashaddr(int af, const union nf_inet_addr *addr)
+{
+	u32 addr_fold = ntohl(addr->ip);
+#ifdef CONFIG_IP_VS_IPV6
+	if (af == AF_INET6)
+		addr_fold = ipv6_addr_hash(&addr->in6);
+#endif
+	return addr_fold;
+}
+
+
 /*
  *	Returns hash value for IPVS CSH entry
  */
 static inline unsigned int
 ip_vs_csh_hashkey(int af, const union nf_inet_addr *addr,
-		     __be16 port)
+		  __be16 port)
 {
-	__be32 addr_fold = addr->ip;
-
-#ifdef CONFIG_IP_VS_IPV6
-	if (af == AF_INET6)
-		addr_fold = addr->ip6[0]^addr->ip6[1]^
-			addr->ip6[2]^addr->ip6[3];
-#endif
-	return hash_32(ntohs(port) + ntohl(addr_fold), 32) % IP_VS_CSH_TAB_SIZE;
+	u32 addr_fold = ip_vs_csh_hashaddr(af, addr);
+	addr_fold += ntohs(port);
+	return hash_32(addr_fold, 32) % IP_VS_CSH_TAB_SIZE;
 }
 
 
@@ -132,14 +139,8 @@ static inline u32
 ip_vs_csh_permutation(struct ip_vs_dest *d, int j)
 {
 	u32 offset, skip;
-	__be32 addr_fold = d->addr.ip;
-
-#ifdef CONFIG_IP_VS_IPV6
-	if (d->af == AF_INET6)
-		addr_fold = d->addr.ip6[0]^d->addr.ip6[1]^
-			d->addr.ip6[2]^d->addr.ip6[3];
-#endif
-	addr_fold = ntohl(addr_fold) + ntohs(d->port);
+	u32 addr_fold = ip_vs_csh_hashaddr(d->af, &d->addr);
+	addr_fold += ntohs(d->port);
 	offset = hash_32(addr_fold, 32) % IP_VS_CSH_TAB_SIZE;
 	skip = (hash_32(addr_fold + 1, 32) % (IP_VS_CSH_TAB_SIZE - 1)) + 1;
 	return (offset + j * skip) % IP_VS_CSH_TAB_SIZE;
