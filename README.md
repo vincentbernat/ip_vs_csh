@@ -1,4 +1,5 @@
-☠️ There is a [better version][0] of this module ready to be merged in the kernel.
+☠️ There is a [better version][0] of this module ready to be merged in
+the kernel (to appear in 4.18). A [backport][2] is available.
 
 # Consistent source hashing scheduler for Linux IPVS
 
@@ -26,6 +27,7 @@ to build it for older kernel versions.
 
 [0]: http://archive.linuxvirtualserver.org/html/lvs-devel/2018-03/msg00023.html
 [1]: https://research.google.com/pubs/pub44824.html
+[2]: https://github.com/vincentbernat/ip_vs_mh
 
 ## Compilation
 
