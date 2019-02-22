@@ -22,9 +22,6 @@ at compile-time. This is the value suggested in the Maglev
 paper. Another possible value is 257 (for small tests) and 655373 (for
 very large setups).
 
-This module should be part of Linux 4.17. This repository enables you
-to build it for older kernel versions.
-
 [0]: http://archive.linuxvirtualserver.org/html/lvs-devel/2018-03/msg00023.html
 [1]: https://research.google.com/pubs/pub44824.html
 [2]: https://github.com/vincentbernat/ip_vs_mh
