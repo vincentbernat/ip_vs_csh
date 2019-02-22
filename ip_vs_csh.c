@@ -35,6 +35,7 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/skbuff.h>
+#include <linux/version.h>
 
 #include <net/ip_vs.h>
 
@@ -43,6 +44,15 @@
 #include <linux/sctp.h>
 
 #define IP_VS_CSH_TAB_SIZE    65537
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,4,0)
+/* No support for inverse packets before 4.4 */
+static inline bool
+ip_vs_iph_inverse(const struct ip_vs_iphdr *iph)
+{
+	return false;
+}
+#endif
 
 /*
  *      IPVS CSH bucket
