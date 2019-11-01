@@ -32,7 +32,7 @@ This is an out-of-tree module. Just type `make` and you should get an
 `ip_vs_csh.ko` file. You can use `insmod` to load it. If your kernel
 source are in a non-standard place, use `make KDIR=...`.
 
-There is no option to this scheduler. You can use it by its name:
+There is no option for this scheduler. You can use it by its name:
 
     ipvsadm -A -t 203.0.113.15:80 -s csh
     ipvsadm -a -t 203.0.113.15:80 -r 10.234.79.11:80 -m
